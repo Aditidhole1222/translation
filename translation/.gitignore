@@ -86,3 +86,10 @@ frontend/.pub/
 # Generated files
 *.pyc
 .cache/
+
+
+backend/models/
+*.safetensors
+*.bin
+*.pt
+*.pth

@@ -6,6 +6,8 @@ Provides REST API endpoints for text and speech translation
 import os
 import shutil
 import traceback
+import requests
+import zipfile
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -106,6 +108,36 @@ translation_pipeline: Optional[TranslationPipeline] = None
 speech_pipeline: Optional[SpeechPipeline] = None
 
 @app.on_event("startup")
+
+
+def download_models():
+    models = [
+        {
+            "dir": "./models/de_en_finetuned_10k",
+            "zip": "./models/de_en_finetuned_10k.zip",
+            "url": "https://drive.google.com/drive/folders/1bdCVSqZbTnOKO1cjbXSIfWW5ertxMWCM?usp=sharing"  # Replace with your direct link
+        },
+        {
+            "dir": "./models/en_mr_finetuned_10k",
+            "zip": "./models/en_mr_finetuned_10k.zip",
+            "url": "https://drive.google.com/drive/folders/1cUaTVOGh7pYDF71gkL67wpNDt-Xoeo0N?usp=sharing"  # Replace with your direct link
+        }
+    ]
+    os.makedirs('./models', exist_ok=True)
+    for model in models:
+        if not os.path.exists(model["dir"]):
+            print(f"Downloading {model['dir']} ...")
+            response = requests.get(model["url"], stream=True)
+            with open(model["zip"], 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            with zipfile.ZipFile(model["zip"], 'r') as zip_ref:
+                zip_ref.extractall('./models/')
+            os.remove(model["zip"])
+            print(f"{model['dir']} download and extraction complete.")
+
+# Call download_models() at startup
+download_models()
 async def startup_event():
     """
     Load models when the application starts
