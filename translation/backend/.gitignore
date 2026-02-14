@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.pyo
+*.pyd
+*.pdb
+*.log
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# VSCode
+.vscode/
+
+# Environment
+.env
+.venv/
+venv/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model checkpoints and large files
+models/*/checkpoint-*
+audio_outputs/
+uploads/
+
+# Ignore test outputs
+*.mp3
+*.wav
+
+# Ignore colab outputs
+*.ipynb
+
+# Ignore render build artifacts
+__render_build__/
+
+# Ignore other temp files
+*.tmp
+*.bak

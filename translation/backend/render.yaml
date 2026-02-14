@@ -1,0 +1,18 @@
+# Render.yaml - Render deployment configuration
+# Place this file in the root of your repository
+
+services:
+  - type: web
+    name: multilingual-translation-api
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app:app --host 0.0.0.0 --port 10000"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: PORT
+        value: 10000
+    healthCheckPath: /health

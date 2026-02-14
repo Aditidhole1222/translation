@@ -1,0 +1,87 @@
+===========================================
+SAVE & DOWNLOAD PARTIAL MODEL FROM COLAB
+===========================================
+
+After your German→English training completes Epoch 1 (33%), add this cell to your Colab notebook:
+
+---------- COLAB CODE CELL ----------
+
+# Save and download partially trained German→English model (1 epoch / 33%)
+
+import shutil
+from google.colab import files
+
+print("📦 Packaging German→English model (33% trained)...")
+
+# The model checkpoint is automatically saved in models/de_en_finetuned/
+# We'll zip the latest checkpoint
+
+# Option 1: Use the final model
+model_path = "./models/de_en_finetuned"
+
+# Option 2: Or use specific checkpoint (e.g., checkpoint-6000)
+# model_path = "./models/de_en_finetuned/checkpoint-6000"
+
+# Create zip file
+shutil.make_archive('de_en_finetuned_33pct', 'zip', model_path)
+
+print("✅ Model packaged as: de_en_finetuned_33pct.zip")
+print(f"📊 File size: {os.path.getsize('de_en_finetuned_33pct.zip') / 1024**2:.1f} MB")
+print("\n⬇️ Downloading model to your computer...")
+
+# Download
+files.download('de_en_finetuned_33pct.zip')
+
+print("\n✅ Download complete!")
+print("\n📋 Next steps:")
+print("1. Move de_en_finetuned_33pct.zip to: C:\\Users\\mohit\\translation\\backend\\")
+print("2. Extract it to create: backend/models/de_en_finetuned/")
+print("3. Run the backend to test!")
+
+---------- END COLAB CODE ----------
+
+
+===========================================
+AFTER DOWNLOADING TO YOUR COMPUTER
+===========================================
+
+1. Move the file to: C:\Users\mohit\translation\backend\
+
+2. Extract the zip file:
+   Right-click → Extract All → Extract to backend/models/de_en_finetuned/
+
+3. Your folder structure should be:
+   backend/
+   ├── models/
+   │   └── de_en_finetuned/
+   │       ├── config.json
+   │       ├── pytorch_model.bin
+   │       ├── tokenizer_config.json
+   │       ├── vocab.json
+   │       └── ...
+
+4. For now, create a dummy English→Marathi model directory:
+   backend/models/en_mr_finetuned/ (copy from de_en_finetuned temporarily)
+
+5. Start backend:
+   cd C:\Users\mohit\translation\backend
+   $env:KMP_DUPLICATE_LIB_OK="TRUE"
+   python app.py
+
+6. Test the app on your emulator!
+
+===========================================
+TEMPORARY WORKAROUND FOR EN→MR MODEL
+===========================================
+
+Since the English→Marathi model isn't trained yet, we'll use the base model.
+
+The backend will create a symlink or use the Helsinki-NLP/opus-mt-en-mr model 
+directly from HuggingFace cache.
+
+This lets you test the FULL pipeline with:
+- ✅ German→English: Partially trained (33%, 1 epoch)
+- ⚠️ English→Marathi: Base model (untrained, but functional)
+
+You can replace it later when the full model trains!
+
